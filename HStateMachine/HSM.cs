@@ -16,9 +16,10 @@ namespace HStateMachine
         /// <returns>True if the signal was handled.</returns>
         public bool Handle(SIG s)
         {
-            var nextState = currentState.Handle(s);
-            if ((nextState != null)){
-                TransitionTo(nextState);
+            // If the transitions could be handled then transition to the new state.
+            var newState = currentState.Handle(s);
+            if ((newState != null)){
+                TransitionTo(newState);
                 return true;
             }
             else

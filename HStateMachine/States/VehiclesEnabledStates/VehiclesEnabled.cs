@@ -1,8 +1,9 @@
-﻿using System;
+﻿using HStateMachine.States.PedestriansEnabledStates;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace HStateMachine.States.VehiclesEnabled
+namespace HStateMachine.States.VehiclesEnabledStates
 {
     public class VehiclesEnabled : HState<TrafficLightSignal, TrafficLightContext, VehiclesEnabledContext>
     {
@@ -13,7 +14,7 @@ namespace HStateMachine.States.VehiclesEnabled
 
         protected override void OnEnter()
         {
-            Context.Model.SignalVehicles(COLOR.RED);
+            Context.Model.SignalPedestrians(COLOR.RED);
             
             InternalHSM.Start();
         }
@@ -25,7 +26,13 @@ namespace HStateMachine.States.VehiclesEnabled
 
         protected override IHState<TrafficLightSignal, TrafficLightContext> OnSignal(TrafficLightSignal s)
         {
-            throw new NotImplementedException();
+            switch (s)
+            {
+                case TrafficLightSignal.YELLOW_TIMEOUT:
+                    return new PedestriansEnabled(Context);
+                default:
+                    return null;
+            }
         }
     }
 }

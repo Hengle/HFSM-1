@@ -52,8 +52,13 @@ namespace HStateMachine
                 return OnSignal(s);
             }
         }
-
+        /// <summary>
+        /// Called as a part of the entering process.
+        /// </summary>
         protected abstract void OnEnter();
+        /// <summary>
+        /// Called as a part of the exiting process.
+        /// </summary>
         protected abstract void OnExit();
 
         /// <summary>

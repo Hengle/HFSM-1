@@ -7,7 +7,9 @@ namespace HStateMachine
     public enum TrafficLightSignal
     {
         PEDESTRIAN_WAITING,
-        TIMER_TIMEOUT
+        GREEN_TIMEOUT,
+        YELLOW_TIMEOUT,
+        PED_TIMEOUT,
     }
     public enum COLOR
     {

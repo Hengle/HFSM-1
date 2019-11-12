@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace HStateMachine.States.VehiclesEnabled
+namespace HStateMachine.States.VehiclesEnabledStates
 {
     class VehiclesGreen : HState<TrafficLightSignal, VehiclesEnabledContext>
     {
@@ -10,7 +10,7 @@ namespace HStateMachine.States.VehiclesEnabled
         protected override void OnEnter()
         {
             timer = new System.Timers.Timer(4000);
-            timer.Elapsed += (e, v) => Context.Model.Handle(TrafficLightSignal.TIMER_TIMEOUT);
+            timer.Elapsed += (e, v) => Context.Model.Handle(TrafficLightSignal.GREEN_TIMEOUT);
             timer.Start();
         }
 
@@ -23,7 +23,7 @@ namespace HStateMachine.States.VehiclesEnabled
         {
             switch (s)
             {
-                case TrafficLightSignal.TIMER_TIMEOUT:
+                case TrafficLightSignal.GREEN_TIMEOUT:
                     if (Context.PedestriansWaiting)
                         return new VehiclesYellow(Context);
                     else
