@@ -8,7 +8,7 @@ namespace HStateMachine.States.VehiclesEnabledStates
     {
         public VehiclesGreenInt(VehiclesEnabledContext context) : base(context) { }
 
-        protected override void OnEnter(){}
+        protected override void OnEnter(){ Console.WriteLine("Waiting for pedestrian walk signal"); }
         protected override void OnExit(){}
 
         protected override IHState<TrafficLightSignal, VehiclesEnabledContext> OnSignal(TrafficLightSignal s)

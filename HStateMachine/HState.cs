@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Timers;
 
@@ -28,6 +29,7 @@ namespace HStateMachine
         /// Enter this state.
         /// </summary>
         public void Enter(){
+            System.Diagnostics.Debug.WriteLine($"Entered {GetType()}");
             // First enter the state
             OnEnter();
             // Then start the internal HSM if existing.
@@ -37,7 +39,8 @@ namespace HStateMachine
             // Stop internal if existing
             InternalHSM?.Stop();
             // Exit this state.
-            OnExit(); 
+            OnExit();
+            System.Diagnostics.Debug.WriteLine($"Exited {GetType()}");
         }
 
         public IHState<SIG, CTX> Handle(SIG s)

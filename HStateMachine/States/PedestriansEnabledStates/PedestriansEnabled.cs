@@ -5,13 +5,13 @@ using System.Text;
 using HStateMachine.States.VehiclesEnabledStates;
 namespace HStateMachine.States.PedestriansEnabledStates
 {
-    class PedestriansEnabled : HState<TrafficLightSignal, TrafficLightContext, PedestriansEnabledContext>
+    public class PedestriansEnabled : HState<TrafficLightSignal, TrafficLightContext, PedestriansEnabledContext>
     {
         protected override IHSM<TrafficLightSignal, PedestriansEnabledContext> InternalHSM { get; } = new HSM<TrafficLightSignal, PedestriansEnabledContext>();
 
         public PedestriansEnabled(TrafficLightContext context):base(context)
         {
-            InternalHSM.SetInitialState(null);
+            InternalHSM.SetInitialState(new PedestriansWalk(new PedestriansEnabledContext {Model = Context.Model}));
         }
         protected override void OnEnter()
         {

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace HStateMachine
 {
     public class HSM<SIG, CTX> : IHSM<SIG, CTX>
     {
+        private bool running;
         private IHState<SIG, CTX> currentState;
 
 
@@ -16,6 +18,7 @@ namespace HStateMachine
         /// <returns>True if the signal was handled.</returns>
         public bool Handle(SIG s)
         {
+            Debug.WriteLine($"{GetType()} Handle {s.ToString()}");
             // If the transitions could be handled then transition to the new state.
             var newState = currentState.Handle(s);
             if ((newState != null)){
@@ -38,14 +41,32 @@ namespace HStateMachine
         /// </summary>
         public void Start()
         {
-            currentState.Enter();
+            if (!running)
+            {
+                running = true;
+                System.Diagnostics.Debug.WriteLine($"Starting {GetType()}");
+                currentState.Enter();
+            }
+            else
+            {
+                throw new Exception("HSM is already running!");
+            }
         }
         /// <summary>
         /// Stop this state machine. Exits the current state.
         /// </summary>
         public void Stop()
         {
-            currentState.Exit();
+            if (running)
+            {
+                running = false;
+                System.Diagnostics.Debug.WriteLine($"Stopping {GetType()}");
+                currentState.Exit();
+            }
+            else
+            {
+                throw new Exception("HSM is already stopped!");
+            }
         }
         /// <summary>
         /// Transition this HSM to a new state.
@@ -56,7 +77,8 @@ namespace HStateMachine
             if(state != currentState)
             {
                 currentState.Exit();
-
+                currentState = state;
+                currentState.Enter();
             }
         }
     }

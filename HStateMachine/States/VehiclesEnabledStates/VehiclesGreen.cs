@@ -9,8 +9,9 @@ namespace HStateMachine.States.VehiclesEnabledStates
         public VehiclesGreen(VehiclesEnabledContext context):base(context){}
         protected override void OnEnter()
         {
-            timer = new System.Timers.Timer(4000);
-            timer.Elapsed += (e, v) => Context.Model.Handle(TrafficLightSignal.GREEN_TIMEOUT);
+            Context.Model.SignalVehicles(COLOR.GREEN);
+            timer = new System.Timers.Timer(2000);
+            timer.Elapsed += (e, v) => { System.Diagnostics.Debug.WriteLine("Green timeout!");  Context.Model.Handle(TrafficLightSignal.GREEN_TIMEOUT); };
             timer.Start();
         }
 
@@ -23,6 +24,9 @@ namespace HStateMachine.States.VehiclesEnabledStates
         {
             switch (s)
             {
+                case TrafficLightSignal.PEDESTRIAN_WAITING:
+                    Context.PedestriansWaiting = true;
+                    return this;
                 case TrafficLightSignal.GREEN_TIMEOUT:
                     if (Context.PedestriansWaiting)
                         return new VehiclesYellow(Context);

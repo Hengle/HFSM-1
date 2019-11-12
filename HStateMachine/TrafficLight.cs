@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+using HStateMachine.States.VehiclesEnabledStates;
 namespace HStateMachine
 {
     public enum TrafficLightSignal
@@ -22,7 +22,7 @@ namespace HStateMachine
     {
         public TrafficLight():base()
         {
-            
+            SetInitialState(new VehiclesEnabled(new TrafficLightContext { Model = this }));
         }
         COLOR pedColor = COLOR.RED;
         COLOR vehColor = COLOR.RED;
@@ -30,14 +30,14 @@ namespace HStateMachine
         {
             pedColor = c;
             Console.WriteLine($"Vehicle light color is {vehColor.ToString()}");
-            Console.WriteLine($"Pedestrian light color is {pedColor.ToString()}");
+            Console.WriteLine($"Pedestrian light color is {pedColor.ToString()}\n");
         }
 
         public void SignalVehicles(COLOR c)
         {
             vehColor = c;
             Console.WriteLine($"Vehicle light color is {vehColor.ToString()}");
-            Console.WriteLine($"Pedestrian light color is {pedColor.ToString()}");
+            Console.WriteLine($"Pedestrian light color is {pedColor.ToString()}\n");
         }
 
     }

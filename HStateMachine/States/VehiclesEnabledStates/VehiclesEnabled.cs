@@ -15,8 +15,6 @@ namespace HStateMachine.States.VehiclesEnabledStates
         protected override void OnEnter()
         {
             Context.Model.SignalPedestrians(COLOR.RED);
-            
-            InternalHSM.Start();
         }
 
         protected override void OnExit()

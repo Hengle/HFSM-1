@@ -18,8 +18,7 @@ namespace HStateMachine
         public TrafficLightContext Base { get => new TrafficLightContext { Model = Model }; }
     }
 
-    class PedestriansEnabledContext : TrafficLightContext
+    public class PedestriansEnabledContext : TrafficLightContext
     {
-        public int flashCount = 7;
     }
 }
