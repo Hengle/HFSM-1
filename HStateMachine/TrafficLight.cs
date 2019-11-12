@@ -29,15 +29,17 @@ namespace HStateMachine
         public void SignalPedestrians(COLOR c)
         {
             pedColor = c;
-            Console.WriteLine($"Vehicle light color is {vehColor.ToString()}");
-            Console.WriteLine($"Pedestrian light color is {pedColor.ToString()}\n");
+            Console.WriteLine($"{"Vehicles",-15}{"Pedestrians",15}");
+            Console.WriteLine($"  {vehColor.ToString(),-15}{pedColor.ToString(),8}");
+            Console.WriteLine("");
         }
 
         public void SignalVehicles(COLOR c)
         {
             vehColor = c;
-            Console.WriteLine($"Vehicle light color is {vehColor.ToString()}");
-            Console.WriteLine($"Pedestrian light color is {pedColor.ToString()}\n");
+            Console.WriteLine($"{"Vehicles",-15}{"Pedestrians",15}");
+            Console.WriteLine($"  {vehColor.ToString(),-15}{pedColor.ToString(),8}");
+            Console.WriteLine("");
         }
 
     }

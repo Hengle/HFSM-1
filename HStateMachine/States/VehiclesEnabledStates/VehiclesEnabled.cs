@@ -17,10 +17,7 @@ namespace HStateMachine.States.VehiclesEnabledStates
             Context.Model.SignalPedestrians(COLOR.RED);
         }
 
-        protected override void OnExit()
-        {
-            
-        }
+        protected override void OnExit(){}
 
         protected override IHState<TrafficLightSignal, TrafficLightContext> OnSignal(TrafficLightSignal s)
         {
