@@ -1,14 +1,15 @@
-﻿using System;
+﻿using HStateMachine.abstracts;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
 namespace HStateMachine
 {
-    public class HSM<SIG, CTX> : IHSM<SIG, CTX>
+    public class HSM<CTX> : IHSM<CTX>
     {
         private bool running;
-        private IHState<SIG, CTX> currentState;
+        private IHState<CTX> currentState;
 
 
         /// <summary>
@@ -16,11 +17,11 @@ namespace HStateMachine
         /// </summary>
         /// <param name="s">The signal to handle.</param>
         /// <returns>True if the signal was handled.</returns>
-        public bool Handle(SIG s)
+        public bool Handle<Args>(Args args) where Args:EventArgs
         {
-            Debug.WriteLine($"{GetType()} Handle {s.ToString()}");
+            //Debug.WriteLine($"{GetType()} Handle {s.ToString()}");
             // If the transitions could be handled then transition to the new state.
-            var newState = currentState.Handle(s);
+            var newState = currentState.Handle(args);
             if ((newState != null)){
                 TransitionTo(newState);
                 return true;
@@ -31,7 +32,7 @@ namespace HStateMachine
             }
         }
 
-        public void SetInitialState(IHState<SIG, CTX> initialState)
+        public void SetInitialState(IHState<CTX> initialState)
         {
             currentState = initialState;
         }
@@ -72,7 +73,7 @@ namespace HStateMachine
         /// Transition this HSM to a new state.
         /// </summary>
         /// <param name="state"> The state to transition to. </param>
-        public void TransitionTo(IHState<SIG, CTX> state)
+        public void TransitionTo(IHState<CTX> state)
         {
             if(state != currentState)
             {

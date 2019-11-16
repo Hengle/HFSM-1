@@ -1,13 +1,12 @@
-﻿using System;
+﻿using HStateMachine.abstracts;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace HStateMachine
 {
-    class Context
-    {
-    }
-    public class TrafficLightContext
+
+    public class TrafficLightContext : Context
     {
         public TrafficLight Model { get; set; }
     }

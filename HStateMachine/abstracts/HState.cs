@@ -6,18 +6,18 @@ using System.Timers;
 
 namespace HStateMachine
 {
-    public abstract class HState<SIG, CTX> : HState<SIG, CTX, CTX>
+    public abstract class HState<CTX> : HState<CTX, CTX>
     {
-        protected override IHSM<SIG, CTX> InternalHSM { get; }
+        protected override IHSM<CTX> InternalHSM { get; }
         public HState(CTX context):base(context)
         {
             Context = context;
         }
     }
 
-    public abstract class HState<SIG, CTX, ICTX> : IHState<SIG, CTX> where ICTX:CTX
+    public abstract class HState<CTX, ICTX> : IHState<CTX> where ICTX:CTX 
     {
-        protected abstract IHSM<SIG, ICTX> InternalHSM { get; }
+        protected abstract IHSM<ICTX> InternalHSM { get; }
         protected CTX Context { get; set; }
         protected Timer timer;
         public HState(CTX context)
@@ -43,32 +43,32 @@ namespace HStateMachine
             System.Diagnostics.Debug.WriteLine($"Exited {GetType()}");
         }
 
-        public IHState<SIG, CTX> Handle(SIG s)
+
+        public IHState<CTX> Handle<Args>(Args args) where Args: EventArgs
         {
-            if (InternalHSM?.Handle(s) ?? false)
+            if (InternalHSM?.Handle(args) ?? false)
             {
                 return this; // If the internal HSM could handle the signal, then we return ourselves to signify an internal transition.
             }
             else
             {
-                // Otherwise consult our OnSignal to determine if we should transition to a state in the same context or pass it further up.
-                return OnSignal(s);
+                //Do we have a method to handle this? if not pass it further up by returning null.
+                if (this is IHState<CTX>.IHandle<Args> handler)
+                    return handler.HandleEvent(args);
+                else
+                    return null;
             }
         }
         /// <summary>
         /// Called as a part of the entering process.
         /// </summary>
-        protected abstract void OnEnter();
+        protected virtual void OnEnter() { }
+
+
         /// <summary>
         /// Called as a part of the exiting process.
         /// </summary>
-        protected abstract void OnExit();
+        protected virtual void OnExit() { }
 
-        /// <summary>
-        /// Handle the signal if possible.
-        /// </summary>
-        /// <param name="s">The signal to handle.</param>
-        /// <returns>The state to transition to, null if unhandled.</returns>
-        protected abstract IHState<SIG, CTX> OnSignal(SIG s);
     }
 }

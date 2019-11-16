@@ -5,13 +5,13 @@ using System.Text;
 
 namespace HStateMachine
 {
-    public interface IHSM<SIG, CTX>
+    public interface IHSM<CTX>
     {
         /// <summary>
         /// Set the initial state of this state machine.
         /// </summary>
         /// <param name="initialState"></param>
-        public void SetInitialState(IHState<SIG, CTX> initialState);
+        public void SetInitialState(IHState<CTX> initialState);
 
         /// <summary>
         /// Start this state machine. Enters the current state.
@@ -28,11 +28,12 @@ namespace HStateMachine
         /// <param name="s">The signal to handle.</param>
         /// <returns>True if the signal was handled.</returns>
         [MethodImpl(MethodImplOptions.Synchronized)]
-        public bool Handle(SIG s);
+        bool Handle<Args>(Args args) where Args : EventArgs;
         /// <summary>
         /// Transition this HSM to a new state.
         /// </summary>
         /// <param name="state"> The state to transition to. </param>
-        public void TransitionTo(IHState<SIG, CTX> state);
+        public void TransitionTo(IHState<CTX> state);
+        
     }
 }

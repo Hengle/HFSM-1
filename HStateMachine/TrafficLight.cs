@@ -4,6 +4,11 @@ using System.Text;
 using HStateMachine.States.VehiclesEnabledStates;
 namespace HStateMachine
 {
+    public class PedestrianWaiting : EventArgs { }
+    public class GreenTimeout : EventArgs { }
+    public class YellowTimeout : EventArgs { }
+    public class PedestrianTimeout : EventArgs { }
+
     public enum TrafficLightSignal
     {
         PEDESTRIAN_WAITING,
@@ -18,7 +23,7 @@ namespace HStateMachine
         YELLOW,
         GREEN
     }
-    public class TrafficLight : HSM<TrafficLightSignal, TrafficLightContext>
+    public class TrafficLight : HSM<TrafficLightContext>
     {
         public TrafficLight():base()
         {

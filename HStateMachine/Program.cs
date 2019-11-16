@@ -12,7 +12,7 @@ namespace HStateMachine
             Console.WriteLine("\n Press enter for pedestrian signal \n");
             while(Console.ReadLine() == "")
             {
-                trafficLight.Handle(TrafficLightSignal.PEDESTRIAN_WAITING);
+                trafficLight.Handle(new PedestrianWaiting());
             }
         }
     }

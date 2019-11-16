@@ -4,20 +4,16 @@ using System.Text;
 
 namespace HStateMachine.States.VehiclesEnabledStates
 {
-    class VehiclesGreenInt:HState<TrafficLightSignal, VehiclesEnabledContext>
+
+    using static HStateMachine.IHState<VehiclesEnabledContext>;
+    class VehiclesGreenInt:HState<VehiclesEnabledContext>, IHandle<PedestrianWaiting>
     {
         public VehiclesGreenInt(VehiclesEnabledContext context) : base(context) { }
 
-        protected override void OnEnter(){ Console.WriteLine("Waiting for pedestrian walk signal"); }
-        protected override void OnExit(){}
-
-        protected override IHState<TrafficLightSignal, VehiclesEnabledContext> OnSignal(TrafficLightSignal s)
+        public IHState<VehiclesEnabledContext> HandleEvent(PedestrianWaiting args)
         {
-            switch (s)
-            {
-                case TrafficLightSignal.PEDESTRIAN_WAITING: return new VehiclesYellow(Context);
-                default: return null;
-            }
+            return new VehiclesYellow(Context);
         }
+        protected override void OnEnter(){ Console.WriteLine("Waiting for pedestrian walk signal"); }
     }
 }

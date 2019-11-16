@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Text;
 
 using HStateMachine.States.VehiclesEnabledStates;
+
 namespace HStateMachine.States.PedestriansEnabledStates
 {
-    public class PedestriansEnabled : HState<TrafficLightSignal, TrafficLightContext, PedestriansEnabledContext>
+
+    using static IHState<TrafficLightContext>;
+    public class PedestriansEnabled : HState<TrafficLightContext, PedestriansEnabledContext>, IHandle<PedestrianTimeout>
     {
-        protected override IHSM<TrafficLightSignal, PedestriansEnabledContext> InternalHSM { get; } = new HSM<TrafficLightSignal, PedestriansEnabledContext>();
+        protected override IHSM<PedestriansEnabledContext> InternalHSM { get; } = new HSM<PedestriansEnabledContext>();
 
         public PedestriansEnabled(TrafficLightContext context):base(context)
         {
@@ -18,17 +21,9 @@ namespace HStateMachine.States.PedestriansEnabledStates
             Context.Model.SignalVehicles(COLOR.RED);
         }
 
-        protected override void OnExit(){}
-
-        protected override IHState<TrafficLightSignal, TrafficLightContext> OnSignal(TrafficLightSignal s)
+        public IHState<TrafficLightContext> HandleEvent(PedestrianTimeout args)
         {
-            switch (s)
-            {
-                case TrafficLightSignal.PED_TIMEOUT:
-                    return new VehiclesEnabled(Context);
-                default:
-                    return null;
-            }
+            return new VehiclesEnabled(Context);
         }
     }
 }
